@@ -13,16 +13,47 @@
         <nuxt-link to="/air">国内机票</nuxt-link>
       </div>
       <div class="info">
-        <div class="userInfo">
+        <div class="userInfo" v-if="!$store.state.user.userInfo.token">
           <nuxt-link to="/user/login">登录/注册</nuxt-link>
         </div>
-        <div v-if="false" class="massge"></div>
+        <div class="massge" v-else>
+          <el-dropdown :hide-on-click="false">
+            <span class="el-dropdown-link">
+              <img
+                class="UserImg"
+                src="http://5b0988e595225.cdn.sohucs.com/images/20180202/19eba768ac544ccf8ad382e0107a5bdd.jpeg"
+                alt
+              />
+              {{this.$store.state.user.userInfo.user.nickname}}
+              <i
+                class="el-icon-arrow-down el-icon--right"
+              ></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>个人中心</el-dropdown-item>
+              <el-dropdown-item @click.native="handleLoginOut">退出</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
       </div>
     </el-row>
   </div>
 </template>
 <script>
-export default {};
+export default {
+  data() {
+    return {};
+  },
+  mounted() {
+
+  },
+  methods: {
+    handleLoginOut(){
+    this.$store.commit('user/clearUserInfo');
+    this.$message.success('退出成功');
+    }
+  }
+};
 </script>
 <style scoped lang="less">
 .content {
@@ -61,6 +92,17 @@ export default {};
     }
   }
   .info {
+    .massge {
+      position: relative;
+      .UserImg {
+        position: absolute;
+        top: 10px;
+        left: -48px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+      }
+    }
   }
 }
 </style>
